@@ -203,6 +203,7 @@ where
             Value::UInt16(x) => ValueRef::UInt16(x),
             Value::UInt32(x) => ValueRef::UInt32(x),
             Value::UInt64(x) => ValueRef::UInt64(x),
+            Value::UInt128(x) => ValueRef::UInt128(x),
 
             Value::Int8(x) => ValueRef::Int8(x),
             Value::Int16(x) => ValueRef::Int16(x),

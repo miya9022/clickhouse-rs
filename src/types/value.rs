@@ -27,6 +27,7 @@ pub enum Value {
     UInt16(u16),
     UInt32(u32),
     UInt64(u64),
+    UInt128(u128),
     Int8(i8),
     Int16(i16),
     Int32(i32),
@@ -55,6 +56,7 @@ impl PartialEq for Value {
             (Value::UInt16(a), Value::UInt16(b)) => *a == *b,
             (Value::UInt32(a), Value::UInt32(b)) => *a == *b,
             (Value::UInt64(a), Value::UInt64(b)) => *a == *b,
+            (Value::UInt128(a), Value::UInt128(b)) => *a == *b,
             (Value::Int8(a), Value::Int8(b)) => *a == *b,
             (Value::Int16(a), Value::Int16(b)) => *a == *b,
             (Value::Int32(a), Value::Int32(b)) => *a == *b,
@@ -94,6 +96,7 @@ impl Value {
             SqlType::UInt16 => Value::UInt16(0),
             SqlType::UInt32 => Value::UInt32(0),
             SqlType::UInt64 => Value::UInt64(0),
+            SqlType::UInt128 => Value::UInt128(0),
             SqlType::Int8 => Value::Int8(0),
             SqlType::Int16 => Value::Int16(0),
             SqlType::Int32 => Value::Int32(0),
@@ -132,6 +135,7 @@ impl fmt::Display for Value {
             Value::UInt16(ref v) => fmt::Display::fmt(v, f),
             Value::UInt32(ref v) => fmt::Display::fmt(v, f),
             Value::UInt64(ref v) => fmt::Display::fmt(v, f),
+            Value::UInt128(ref v) => fmt::Display::fmt(v, f),
             Value::Int8(ref v) => fmt::Display::fmt(v, f),
             Value::Int16(ref v) => fmt::Display::fmt(v, f),
             Value::Int32(ref v) => fmt::Display::fmt(v, f),
@@ -205,6 +209,7 @@ impl convert::From<Value> for SqlType {
             Value::UInt16(_) => SqlType::UInt16,
             Value::UInt32(_) => SqlType::UInt32,
             Value::UInt64(_) => SqlType::UInt64,
+            Value::UInt128(_) => SqlType::UInt128,
             Value::Int8(_) => SqlType::Int8,
             Value::Int16(_) => SqlType::Int16,
             Value::Int32(_) => SqlType::Int32,
@@ -333,6 +338,7 @@ value_from! {
     u16: UInt16,
     u32: UInt32,
     u64: UInt64,
+    u128: UInt128,
 
     i8: Int8,
     i16: Int16,
@@ -430,6 +436,7 @@ from_value! {
     u16: UInt16,
     u32: UInt32,
     u64: UInt64,
+    u128: UInt128,
     i8: Int8,
     i16: Int16,
     i32: Int32,
@@ -505,6 +512,7 @@ mod test {
         test_u16: u16,
         test_u32: u32,
         test_u64: u64,
+        test_u128: u128,
 
         test_i8: i8,
         test_i16: i16,
@@ -555,7 +563,7 @@ mod test {
         let dt: Value = date_time_value.into();
 
         assert_eq!(
-            Value::Date(u16::get_days(date_value), date_value.timezone()),
+            Value::Date(u16::get_days(date_value.clone()), date_value.timezone()),
             d
         );
         assert_eq!(Value::ChronoDateTime(date_time_value), dt);
@@ -596,6 +604,7 @@ mod test {
         assert_eq!("42".to_string(), format!("{}", Value::UInt16(42)));
         assert_eq!("42".to_string(), format!("{}", Value::UInt32(42)));
         assert_eq!("42".to_string(), format!("{}", Value::UInt64(42)));
+        assert_eq!("42".to_string(), format!("{}", Value::UInt128(42)));
 
         assert_eq!("42".to_string(), format!("{}", Value::Int8(42)));
         assert_eq!("42".to_string(), format!("{}", Value::Int16(42)));

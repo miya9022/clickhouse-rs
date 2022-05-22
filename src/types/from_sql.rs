@@ -313,6 +313,7 @@ from_sql_impl! {
     u16: UInt16,
     u32: UInt32,
     u64: UInt64,
+    u128: UInt128,
 
     i8: Int8,
     i16: Int16,
@@ -344,7 +345,7 @@ mod test {
             Ok(_) => panic!("should fail"),
             Err(e) => assert_eq!(
                 "From SQL error: `SqlType::UInt16 cannot be cast to u32.`".to_string(),
-                format!("{}", e)
+                format!("{:?}", e)
             ),
         }
     }

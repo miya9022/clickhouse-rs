@@ -4,3 +4,4 @@ Cargo.lock
 *.iml
 .DS_Store
 **/*.rs.bk
+**/cmake-build-debug

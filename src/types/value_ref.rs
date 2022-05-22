@@ -22,6 +22,7 @@ pub enum ValueRef<'a> {
     UInt16(u16),
     UInt32(u32),
     UInt64(u64),
+    UInt128(u128),
     Int8(i8),
     Int16(i16),
     Int32(i32),
@@ -49,6 +50,7 @@ impl<'a> PartialEq for ValueRef<'a> {
             (ValueRef::UInt16(a), ValueRef::UInt16(b)) => *a == *b,
             (ValueRef::UInt32(a), ValueRef::UInt32(b)) => *a == *b,
             (ValueRef::UInt64(a), ValueRef::UInt64(b)) => *a == *b,
+            (ValueRef::UInt128(a), ValueRef::UInt128(b)) => *a == *b,
             (ValueRef::Int8(a), ValueRef::Int8(b)) => *a == *b,
             (ValueRef::Int16(a), ValueRef::Int16(b)) => *a == *b,
             (ValueRef::Int32(a), ValueRef::Int32(b)) => *a == *b,
@@ -92,6 +94,7 @@ impl<'a> fmt::Display for ValueRef<'a> {
             ValueRef::UInt16(v) => fmt::Display::fmt(v, f),
             ValueRef::UInt32(v) => fmt::Display::fmt(v, f),
             ValueRef::UInt64(v) => fmt::Display::fmt(v, f),
+            ValueRef::UInt128(v) => fmt::Display::fmt(v, f),
             ValueRef::Int8(v) => fmt::Display::fmt(v, f),
             ValueRef::Int16(v) => fmt::Display::fmt(v, f),
             ValueRef::Int32(v) => fmt::Display::fmt(v, f),
@@ -162,6 +165,7 @@ impl<'a> convert::From<ValueRef<'a>> for SqlType {
             ValueRef::UInt16(_) => SqlType::UInt16,
             ValueRef::UInt32(_) => SqlType::UInt32,
             ValueRef::UInt64(_) => SqlType::UInt64,
+            ValueRef::UInt128(_) => SqlType::UInt128,
             ValueRef::Int8(_) => SqlType::Int8,
             ValueRef::Int16(_) => SqlType::Int16,
             ValueRef::Int32(_) => SqlType::Int32,
@@ -226,6 +230,7 @@ impl<'a> From<ValueRef<'a>> for Value {
             ValueRef::UInt16(v) => Value::UInt16(v),
             ValueRef::UInt32(v) => Value::UInt32(v),
             ValueRef::UInt64(v) => Value::UInt64(v),
+            ValueRef::UInt128(v) => Value::UInt128(v),
             ValueRef::Int8(v) => Value::Int8(v),
             ValueRef::Int16(v) => Value::Int16(v),
             ValueRef::Int32(v) => Value::Int32(v),
@@ -290,6 +295,7 @@ from_number! {
     u16: UInt16,
     u32: UInt32,
     u64: UInt64,
+    u128: UInt128,
 
     i8: Int8,
     i16: Int16,
@@ -307,6 +313,7 @@ impl<'a> From<&'a Value> for ValueRef<'a> {
             Value::UInt16(v) => ValueRef::UInt16(*v),
             Value::UInt32(v) => ValueRef::UInt32(*v),
             Value::UInt64(v) => ValueRef::UInt64(*v),
+            Value::UInt128(v) => ValueRef::UInt128(*v),
             Value::Int8(v) => ValueRef::Int8(*v),
             Value::Int16(v) => ValueRef::Int16(*v),
             Value::Int32(v) => ValueRef::Int32(*v),
@@ -392,6 +399,7 @@ value_from! {
     u16: UInt16,
     u32: UInt32,
     u64: UInt64,
+    u128: UInt128,
 
     i8: Int8,
     i16: Int16,
@@ -419,6 +427,7 @@ mod test {
         assert_eq!("42".to_string(), format!("{}", ValueRef::UInt16(42)));
         assert_eq!("42".to_string(), format!("{}", ValueRef::UInt32(42)));
         assert_eq!("42".to_string(), format!("{}", ValueRef::UInt64(42)));
+        assert_eq!("42".to_string(), format!("{}", ValueRef::UInt128(42)));
 
         assert_eq!("42".to_string(), format!("{}", ValueRef::Int8(42)));
         assert_eq!("42".to_string(), format!("{}", ValueRef::Int16(42)));
@@ -497,6 +506,7 @@ mod test {
         assert_eq!(Value::from(ValueRef::UInt16(42)), Value::UInt16(42));
         assert_eq!(Value::from(ValueRef::UInt32(42)), Value::UInt32(42));
         assert_eq!(Value::from(ValueRef::UInt64(42)), Value::UInt64(42));
+        assert_eq!(Value::from(ValueRef::UInt128(42)), Value::UInt128(42));
 
         assert_eq!(Value::from(ValueRef::Int8(42)), Value::Int8(42));
         assert_eq!(Value::from(ValueRef::Int16(42)), Value::Int16(42));
@@ -552,6 +562,7 @@ mod test {
         assert_eq!(SqlType::from(ValueRef::UInt16(42)), SqlType::UInt16);
         assert_eq!(SqlType::from(ValueRef::UInt32(42)), SqlType::UInt32);
         assert_eq!(SqlType::from(ValueRef::UInt64(42)), SqlType::UInt64);
+        assert_eq!(SqlType::from(ValueRef::UInt128(42)), SqlType::UInt128);
 
         assert_eq!(SqlType::from(ValueRef::Int8(42)), SqlType::Int8);
         assert_eq!(SqlType::from(ValueRef::Int16(42)), SqlType::Int16);
